@@ -46,8 +46,16 @@ set(INCLUDE_DIRS include
   ${AIRSIM_ROOT}/MavLinkCom/include
   ${AIRSIM_ROOT}/MavLinkCom/common_utils
   ${OpenCV_INCLUDE_DIRS}
+  /opt/ros/${ROS_DISTRO}/include  # 添加这行
   )
-include_directories(${INCLUDE_DIRS})
+include_directories(
+  ${INCLUDE_DIRS}
+  /opt/ros/${ROS_DISTRO}/include
+  ${tf2_INCLUDE_DIRS}
+  ${mavros_msgs_INCLUDE_DIRS}
+  ${geometry_msgs_INCLUDE_DIRS}
+  ${sensor_msgs_INCLUDE_DIRS}
+)
 
 add_library(airsim_settings_parser src/airsim_settings_parser.cpp)
 target_link_libraries(airsim_settings_parser AirLib)
@@ -59,6 +67,12 @@ ament_target_dependencies(pd_position_controller_simple
   nav_msgs
   geometry_msgs
   airsim_interfaces
+  tf2          # 添加这个
+  tf2_ros      # 添加这个
+  mavros_msgs  # 添加这个
+  sensor_msgs  # 可能需要
+  std_srvs
+  tf2_geometry_msgs
 )
 
 add_library(airsim_ros src/airsim_ros_wrapper.cpp)
@@ -72,6 +86,11 @@ ament_target_dependencies(airsim_ros
   tf2_ros
   cv_bridge
   airsim_interfaces
+  mavros_msgs  # 添加这个
+  tf2          # 添加这个
+  std_msgs     # 添加这个
+  std_srvs
+  tf2_geometry_msgs
 )
 
 add_executable(airsim_node src/airsim_node.cpp)
