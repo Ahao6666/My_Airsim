@@ -11,7 +11,9 @@ import cv2
 client = airsim.MultirotorClient()
 client.confirmConnection()
 client.enableApiControl(True)
-
+client.simEnableWeather(True)
+client.simSetWeatherParameter(airsim.WeatherParameter.Rain, 0.25);
+client.simSetWeatherParameter(airsim.WeatherParameter.MapleLeaf, 0.5);
 state = client.getMultirotorState()
 s = pprint.pformat(state)
 print("state: %s" % s)
@@ -40,8 +42,8 @@ client.takeoffAsync().join()
 state = client.getMultirotorState()
 print("state: %s" % pprint.pformat(state))
 
-airsim.wait_key('Press any key to move vehicle to (-10, 10, -10) at 5 m/s')
-client.moveToPositionAsync(-10, 10, -10, 5).join()
+airsim.wait_key('Press any key to move vehicle to (3, 5, -5) at 1 m/s')
+client.moveToPositionAsync(3, 5, -5, 1).join()
 
 client.hoverAsync().join()
 
